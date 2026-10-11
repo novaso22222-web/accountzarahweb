@@ -11,11 +11,25 @@ const getGlobalFn = (name: string): WindowFn | undefined => {
 };
 
 // script.js дотор глобал (window) функцуудаар зарлагдсан үйлдлүүдийг
-// аюулгүй дуудах туслах функц. Функц хараахан ачаалагдаагүй бол алдаа гарахгүй.
+// аюулгүй дуудах туслах функцууд. Функц хараахан ачаалагдаагүй бол алдаа гарахгүй.
+const callGlobal = (name: string, ...args: unknown[]) =>
+  getGlobalFn(name)?.(...args);
+
+// onclick="fn(a, b)" -> onClick={call("fn", a, b)}
 const call =
   (name: string, ...args: unknown[]) =>
+  () =>
+    callGlobal(name, ...args);
+
+// onclick="fn(a, this)" -> onClick={callOnThis("fn", a)}  (this = дарагдсан элемент)
+const callOnThis =
+  (name: string, ...args: unknown[]) =>
   (e: MouseEvent<HTMLElement>) =>
-    getGlobalFn(name)?.(...args, e?.currentTarget);
+    callGlobal(name, ...args, e.currentTarget);
+
+// Лого дээр дарахад: filterListings('ALL', document.querySelector('.tab-btn'))
+const showAllListings = () =>
+  callGlobal("filterListings", "ALL", document.querySelector(".tab-btn"));
 
 const closeModals = () => {
   getGlobalFn("closeModals")?.();
@@ -94,7 +108,7 @@ export default function Page() {
   return (
     <>
       <header>
-        <div className="logo" onClick={call("filterListings", "ALL")}>
+        <div className="logo" onClick={showAllListings}>
           GAME<span className="neon-text">ACCOUNT</span>.VERCEL
         </div>
 
@@ -297,7 +311,7 @@ export default function Page() {
           <button
             type="button"
             className="tab-btn active"
-            onClick={call("filterListings", "ALL")}
+            onClick={callOnThis("filterListings", "ALL")}
           >
             <span>Бүх Зар</span>
           </button>
@@ -305,7 +319,7 @@ export default function Page() {
           <button
             type="button"
             className="tab-btn tab-urgent"
-            onClick={call("filterListings", "URGENT")}
+            onClick={callOnThis("filterListings", "URGENT")}
           >
             ⚡ <span>ШУУРХАЙ</span>
           </button>
@@ -315,7 +329,7 @@ export default function Page() {
               key={t.value}
               type="button"
               className="tab-btn"
-              onClick={call("filterListings", t.value)}
+              onClick={callOnThis("filterListings", t.value)}
             >
               <img
                 src={t.src}
@@ -721,7 +735,7 @@ export default function Page() {
               type="button"
               className="tab-btn install-tab-btn active"
               data-platform="android"
-              onClick={call("switchInstallTab", "android")}
+              onClick={callOnThis("switchInstallTab", "android")}
             >
               🤖 Android
             </button>
@@ -729,7 +743,7 @@ export default function Page() {
               type="button"
               className="tab-btn install-tab-btn"
               data-platform="ios"
-              onClick={call("switchInstallTab", "ios")}
+              onClick={callOnThis("switchInstallTab", "ios")}
             >
               🍏 iPhone
             </button>
