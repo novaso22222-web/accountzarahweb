@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="mn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#0a0a0f">
+    <meta name="format-detection" content="telephone=yes">
+    <meta name="description" content="Тоглоомын аккаунт худалдааны платформ">
+
+    <title>GameAccount.Vercel - Made By NoVa</title>
+
+    <!-- Facebook / Messenger preview тохиргоо (зам заавал бүтэн URL байх ёстой) -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://account-hudaldaa.vercel.app">
+    <meta property="og:title" content="ACCOUNT HUDALDAA">
+    <meta property="og:description" content="Тоглоомын аккаунт худалдааны платформ">
+    <meta property="og:image" content="https://account-hudaldaa.vercel.app/og-image.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+
+    <!-- Twitter preview тохиргоо -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="ACCOUNT HUDALDAA">
+    <meta name="twitter:description" content="Тоглоомын аккаунт худалдааны платформ">
+    <meta name="twitter:image" content="https://account-hudaldaa.vercel.app/og-image.png">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="/account-hudaldaa-logo.png">
+
+    <!-- iOS / Android нүүр хуудсанд нэмэх лого -->
+    <link rel="apple-touch-icon" href="/account-hudaldaa-logo.png">
+
+    <!-- PWA: Апп болгон суулгах тохиргоо -->
+    <link rel="manifest" href="/manifest.json">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="GameAccount">
+
+    <link rel="stylesheet" href="/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700;800&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- 1. Supabase CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <!-- 2. Өөрийн скрипт -->
+    <script src="/script.js" defer></script>
+</head>
+<body>
+
+    <header>
+        <div class="logo" onclick="filterListings('ALL', document.querySelector('.tab-btn'))">
+            GAME<span class="neon-text">ACCOUNT</span>.VERCEL
+        </div>
+        <div class="install-controls" id="installControls" style="display:none;">
+            <button type="button" class="btn btn-purple" id="installAppBtn" onclick="handleInstallClick()">📲 Апп татах</button>
+        </div>
+        <div class="auth-controls" id="authControls"></div>
+    </header>
+
+    <main class="container">
+
+        <!-- HERO -->
+        <section class="hero">
+            <span class="hero-eyebrow">⚡ Хурдан, аюулгүй, баталгаатай</span>
+            <h1 class="hero-title">Тоглоомын <span class="grad">аккаунт</span> худалдаа<br>нэг дор</h1>
+            <p class="hero-subtitle">Mobile Legends, PUBG, Standoff 2 болон бусад тоглоомын аккаунтаа худалдаж аваарай эсвэл борлуулаарай — хурдан, найдвартай.</p>
+        </section>
+
+        <!-- ШИНЭ ЗАР НЭМЭХ ХЭСЭГ -->
+        <section class="add-post-section" id="addPostSection" style="display: none;">
+            <div class="section-header">
+                <h2><span class="icon">⚡</span> Шинэ зар байршуулах</h2>
+            </div>
+
+            <form id="postForm">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="gameType">Тоглоом:</label>
+                        <select id="gameType" required>
+                            <option value="MLBB">Mobile Legends</option>
+                            <option value="PUBG">PUBG Mobile</option>
+                            <option value="Standoff 2">Standoff 2</option>
+                            <option value="Clash of Clans">Clash of Clans</option>
+                            <option value="Roblox">Roblox</option>
+                            <option value="Spike">Spike</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="postTitle">Зарын гарчиг:</label>
+                        <input type="text" id="postTitle" placeholder="Жишээ: Mythic Glory 80 skin" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="postPrice">Үнэ (₮):</label>
+                        <input type="number" id="postPrice" inputmode="numeric" min="0" placeholder="50000" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="tradeOption">Солилцох Нөхцөл (Trade):</label>
+                        <select id="tradeOption" required>
+                            <option value="NO">Зөвхөн зарагдана</option>
+                            <option value="EQUAL">Ойролцоо үнэтэй аккаунтаар солино</option>
+                            <option value="PAY_EXTRA">Дээгүүр аккаунтад зөрүү мөнгө өгнө</option>
+                            <option value="RECEIVE_EXTRA">Дор аккаунтаас зөрүү мөнгө авна</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="ownerPhone">Утасны дугаар:</label>
+                        <input type="tel" id="ownerPhone" inputmode="tel" placeholder="99112233" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="ownerFacebook">Facebook линк / Нэр:</label>
+                        <input type="text" id="ownerFacebook" placeholder="https://facebook.com/yourprofile" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="postDesc">Дэлгэрэнгүй тайлбар:</label>
+                    <textarea id="postDesc" rows="3" placeholder="Аккаунтын дэлгэрэнгүй мэдээлэл..." required></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="postImagesInput">Зургууд <span class="label-hint">— эхний зураг нүүр зураг болно</span></label>
+                    <div class="uploader" id="imageUploader">
+                        <input type="file" id="postImagesInput" class="visually-hidden-input" accept="image/*" multiple>
+                        <label for="postImagesInput" class="upload-drop" id="uploadDrop">
+                            <span class="upload-icon" aria-hidden="true">
+                                <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.1-3.1a2 2 0 0 0-2.8 0L6 21"/></svg>
+                            </span>
+                            <span class="upload-title">Зураг нэмэх</span>
+                            <span class="upload-sub">Компьютер, утаснаасаа хэдэн ч зураг нэг дор сонгоно. Чирч оруулж болно.</span>
+                        </label>
+                        <div class="upload-meta" id="uploadMeta" hidden>
+                            <span id="uploadCount" aria-live="polite"></span>
+                            <button type="button" class="link-btn" id="uploadClearBtn">Бүгдийг арилгах</button>
+                        </div>
+                        <div class="upload-previews" id="uploadPreviews"></div>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-success btn-full"> Зарыг нийтлэх</button>
+            </form>
+        </section>
+
+        <!-- ШҮҮЛТҮҮР -->
+        <h2 class="section-title">Зарууд</h2>
+        <div class="filter-tabs">
+            <button type="button" class="tab-btn active" onclick="filterListings('ALL', this)"> <span>Бүх Зар</span></button>
+            <button type="button" class="tab-btn tab-urgent" onclick="filterListings('URGENT', this)">⚡ <span>ШУУРХАЙ</span></button>
+            <button type="button" class="tab-btn" onclick="filterListings('MLBB', this)">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTZDomgU3MDJcGXkMQ1ZD3qa_2x0dRBtQPRGDigOX-XFG7TeiDt3S9LUv71&s=10" alt="MLBB" referrerpolicy="no-referrer" onerror="this.style.display='none'" style="width:20px; height:20px; vertical-align:middle; margin-right:5px; border-radius:4px;">
+                <span>Mobile Legends</span>
+            </button>
+            <button type="button" class="tab-btn" onclick="filterListings('PUBG', this)">
+                <img src="https://upload.wikimedia.org/wikipedia/en/4/44/PlayerUnknown%27s_Battlegrounds_Mobile.webp" alt="PUBG" referrerpolicy="no-referrer" onerror="this.style.display='none'" style="width:20px; height:20px; vertical-align:middle; margin-right:5px; border-radius:4px;">
+                <span>PUBG Mobile</span>
+            </button>
+            <button type="button" class="tab-btn" onclick="filterListings('Standoff 2', this)">
+                <img src="https://play-lh.googleusercontent.com/uAfkyiLUpCY5pk4J5hKGb03q3afDOybzE3F25c6rbBTWaEtvhm6-qLTuO5LhLvnSIuHljRxXA7P6MH_6mAdy3w" alt="Standoff 2" referrerpolicy="no-referrer" onerror="this.style.display='none'" style="width:20px; height:20px; vertical-align:middle; margin-right:5px; border-radius:4px;">
+                <span>Standoff 2</span>
+            </button>
+            <button type="button" class="tab-btn" onclick="filterListings('Clash of Clans', this)">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSkPvboqr_UT1z-K8EaqabAAFlvZ2o_GmIgCORHHbmqWw&s" alt="COC" referrerpolicy="no-referrer" onerror="this.style.display='none'" style="width:20px; height:20px; vertical-align:middle; margin-right:5px; border-radius:4px;">
+                <span>Clash of Clans</span>
+            </button>
+            <button type="button" class="tab-btn" onclick="filterListings('Roblox', this)">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS1dgew6H0aU5h9k3fzwF_vwgRuC1Q5DeoIlpa8KeoVUw&s" alt="Roblox" referrerpolicy="no-referrer" onerror="this.style.display='none'" style="width:20px; height:20px; vertical-align:middle; margin-right:5px; border-radius:4px;">
+                <span>Roblox</span>
+            </button>
+            <button type="button" class="tab-btn" onclick="filterListings('Spike', this)">
+                <img src="https://play-lh.googleusercontent.com/-UpWtpXqM7_e9QOjDbiEENhCpF6YUn1J1DiKizDReSX87PmdtOLF2fPQn7Z9yzMvRXS4eELH4tJX5bK-HGg5l1Y" alt="Spike" referrerpolicy="no-referrer" onerror="this.style.display='none'" style="width:20px; height:20px; vertical-align:middle; margin-right:5px; border-radius:4px;">
+                <span>Spike</span>
+            </button>
+        </div>
+
+        <!-- Агуулгыг script.js (renderUrgentBanner) бөглөнө -->
+        <div class="urgent-banner" id="urgentBanner"></div>
+
+        <div class="grid" id="listingsContainer"></div>
+
+    </main>
+
+    <!-- ДЭЛГЭРЭНГҮЙ ХАРАХ MODAL -->
+    <div class="modal" id="detailModal" style="display: none;">
+        <div class="modal-content modal-lg">
+            <span class="close-btn" onclick="closeModals()">&times;</span>
+            <div class="detail-viewer" id="detailViewer">
+                <img id="detailMainImg" class="main-detail-img" src="" alt="Main Image">
+                <button type="button" class="viewer-nav prev" id="detailPrevBtn" onclick="stepDetailImage(-1)" aria-label="Өмнөх">&#8249;</button>
+                <button type="button" class="viewer-nav next" id="detailNextBtn" onclick="stepDetailImage(1)" aria-label="Дараах">&#8250;</button>
+                <span class="viewer-counter" id="detailImgCounter"></span>
+            </div>
+            <div id="detailGallery" class="gallery-container"></div>
+
+            <div class="badge-group">
+                <span id="detailPostNumber" class="post-number-badge"></span>
+                <span id="detailBadge" class="game-badge"></span>
+                <span id="detailTradeBadge" class="trade-badge"></span>
+            </div>
+
+            <h2 id="detailTitle" class="detail-title"></h2>
+            <div id="detailPrice" class="detail-price"></div>
+
+            <div class="contact-card">
+                <h4>📞 Эзэмшигчийн Холбоо Барих:</h4>
+                <p>📱 Утас: <span id="detailPhone" class="contact-highlight"></span></p>
+                <p>🌐 Facebook: <a id="detailFacebook" class="contact-link" href="#" target="_blank" rel="noopener noreferrer"></a></p>
+            </div>
+
+            <p id="detailDesc" class="detail-desc"></p>
+            <div id="detailActionBtns" class="action-btn-group"></div>
+        </div>
+    </div>
+
+    <!-- ЧАТ MODAL -->
+    <div class="modal" id="chatModal" style="display: none;">
+        <div class="modal-content modal-xl">
+            <span class="close-btn" onclick="closeModals()">&times;</span>
+            <h3 id="chatTitle" class="modal-title">💬 Мессеж Хэсэг</h3>
+            <div class="chat-layout">
+                <div class="chat-list" id="chatListContainer"></div>
+                <div class="chat-main">
+                    <div class="chat-box" id="chatMessages"></div>
+                    <form id="chatForm" class="chat-form">
+                        <input type="text" id="chatInput" placeholder="Мессеж бичих..." autocomplete="off" required>
+                        <button type="submit" class="btn btn-primary">Илгээх</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- АДМИН УДИРДАХ ЦОНХ -->
+    <div id="adminModal" class="modal" style="display: none;">
+        <div class="modal-content modal-xl" style="max-width: 950px; max-height: 88vh; overflow-y: auto;">
+            <span class="close-btn" onclick="closeModals()">&times;</span>
+            <h2 class="modal-title admin-title" style="color: var(--accent-red); margin-bottom: 1.2rem;">🛠 Админ Удирдах Хэсэг</h2>
+
+            <!-- Шуурхай хүсэлтүүд -->
+            <h3 style="color: var(--accent-urgent); margin-bottom: 0.8rem; font-size: 1.1rem;">⚡ Шуурхай зарын хүсэлтүүд (төлбөр шалгах)</h3>
+            <div class="table-wrap" style="overflow-x: auto; margin-bottom: 2rem;">
+                <table class="admin-table" style="width: 100%; border-collapse: collapse; text-align: left; font-size: 0.88rem;">
+                    <thead>
+                        <tr style="background: rgba(255, 45, 107, 0.15); color: var(--accent-urgent); border-bottom: 2px solid var(--border-color);">
+                            <th style="padding: 10px;">Зар</th>
+                            <th style="padding: 10px;">Хэрэглэгч</th>
+                            <th style="padding: 10px;">Төлсөн тайлбар</th>
+                            <th style="padding: 10px;">Баримт</th>
+                            <th style="padding: 10px;">Төлөв</th>
+                            <th style="padding: 10px;">Үйлдэл</th>
+                        </tr>
+                    </thead>
+                    <tbody id="adminUrgentTable"></tbody>
+                </table>
+            </div>
+
+            <!-- Заруудын Удирдлага -->
+            <h3 style="color: var(--primary); margin-bottom: 0.8rem; font-size: 1.1rem;">📌 Заруудын Хяналт &amp; Төлөв</h3>
+            <div class="table-wrap" style="overflow-x: auto; margin-bottom: 2rem;">
+                <table class="admin-table" style="width: 100%; border-collapse: collapse; text-align: left; font-size: 0.88rem;">
+                    <thead>
+                        <tr style="background: rgba(255, 122, 48, 0.12); color: var(--primary); border-bottom: 2px solid var(--border-color);">
+                            <th style="padding: 10px;">#</th>
+                            <th style="padding: 10px;">Гарчиг</th>
+                            <th style="padding: 10px;">Эзэмшигч</th>
+                            <th style="padding: 10px;">Төлөв</th>
+                            <th style="padding: 10px;">Үйлдэл</th>
+                        </tr>
+                    </thead>
+                    <tbody id="adminListingsTable"></tbody>
+                </table>
+            </div>
+
+            <!-- Хэрэглэгчдийн Удирдлага -->
+            <h3 style="color: var(--primary); margin-bottom: 0.8rem; font-size: 1.1rem;">👥 Хэрэглэгчдийн Бүртгэл</h3>
+            <div class="table-wrap" style="overflow-x: auto;">
+                <table class="admin-table" style="width: 100%; border-collapse: collapse; text-align: left; font-size: 0.88rem;">
+                    <thead>
+                        <tr style="background: rgba(255, 122, 48, 0.12); color: var(--primary); border-bottom: 2px solid var(--border-color);">
+                            <th style="padding: 10px;">#</th>
+                            <th style="padding: 10px;">Username</th>
+                            <th style="padding: 10px;">Gmail</th>
+                            <th style="padding: 10px;">Эрх</th>
+                            <th style="padding: 10px;">Шуурхай Эрх</th>
+                            <th style="padding: 10px;">Үйлдэл</th>
+                        </tr>
+                    </thead>
+                    <tbody id="adminUsersTable"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- ШУУРХАЙ ЗАР ТАВИХ ХҮСЭЛТ MODAL -->
+    <div class="modal" id="urgentModal" style="display: none;">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModals()">&times;</span>
+            <h3 class="modal-title urgent-title">⚡ Шуурхай зар тавих хүсэлт</h3>
+            <form id="urgentForm">
+                <div class="form-group">
+                    <label for="urgentListingSelect">Шуурхай болгох зар:</label>
+                    <select id="urgentListingSelect" required></select>
+                </div>
+
+                <div class="contact-card">
+                    <h4>💳 Төлбөр төлөх данс:</h4>
+                    <p>Банк: <span class="contact-highlight">Хаан Банк</span></p>
+                    <p>Данс: <span class="contact-highlight" id="urgentAccountNo">5726062671</span></p>
+                    <p>Нэр: <span class="contact-highlight">Bat-Erdene Otgonbayar</span></p>
+                    <p id="urgentFeeLine"></p>
+                    <p>Гүйлгээний утга: <span class="contact-highlight" id="urgentRefCode"></span></p>
+                </div>
+
+                <div class="form-group">
+                    <label for="urgentPayerNote">Төлбөр төлсөн хүний нэр / тайлбар:</label>
+                    <input type="text" id="urgentPayerNote" placeholder="Жишээ: Б.Болд, 15:20 цагт шилжүүлсэн" required>
+                </div>
+                <div class="form-group">
+                    <label for="urgentReceiptFile">Гүйлгээний баримт (зураг):</label>
+                    <input type="file" id="urgentReceiptFile" accept="image/*" required>
+                </div>
+                <button type="submit" class="btn btn-urgent btn-full">📨 Админд хүсэлт илгээх</button>
+                <p style="color:#94a3b8; font-size:0.85rem; margin-top:0.6rem;">Төлбөрөө шилжүүлсний дараа хүсэлтээ илгээнэ үү. Админ шалгаж баталгаажуулсны дараа таны зар ШУУРХАЙ болно.</p>
+            </form>
+        </div>
+    </div>
+
+    <!-- НЭВТРЭХ MODAL -->
+    <div class="modal" id="loginModal" style="display: none;">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModals()">&times;</span>
+            <h3 class="modal-title">Нэвтрэх</h3>
+            <form id="loginForm">
+                <div class="form-group"><label for="loginEmail">И-мэйл:</label><input type="email" id="loginEmail" autocomplete="email" inputmode="email" required></div>
+                <div class="form-group"><label for="loginPassword">Нууц үг:</label><input type="password" id="loginPassword" autocomplete="current-password" required></div>
+                <button type="submit" class="btn btn-primary btn-full">Нэвтрэх</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- БҮРТГҮҮЛЭХ MODAL -->
+    <div class="modal" id="registerModal" style="display: none;">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModals()">&times;</span>
+            <h3 class="modal-title">Бүртгүүлэх</h3>
+            <form id="registerForm">
+                <div class="form-group">
+                    <label for="regUsername">Username (Хэрэглэгчийн нэр):</label>
+                    <input type="text" id="regUsername" autocomplete="username" required>
+                </div>
+                <div class="form-group">
+                    <label for="regEmail">И-мэйл (Gmail):</label>
+                    <input type="email" id="regEmail" autocomplete="email" inputmode="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="regPassword">Нууц үг:</label>
+                    <input type="password" id="regPassword" autocomplete="new-password" required>
+                </div>
+                <button type="submit" id="regSubmitBtn" class="btn btn-success btn-full">Бүртгүүлэх</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- АПП СУУЛГАХ ЗААВАР MODAL (Android / iPhone тус тусдаа) -->
+    <div class="modal" id="installModal" style="display: none;">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModals()">&times;</span>
+            <h3 class="modal-title">📲 Аппликейшн болгон суулгах</h3>
+
+            <div class="install-tabs">
+                <button type="button" class="tab-btn install-tab-btn active" data-platform="android" onclick="switchInstallTab('android', this)">🤖 Android</button>
+                <button type="button" class="tab-btn install-tab-btn" data-platform="ios" onclick="switchInstallTab('ios', this)">🍏 iPhone</button>
+            </div>
+
+            <div id="installStepsAndroid" class="install-steps">
+                <ol>
+                    <li>Доорх <b>"Суулгах"</b> товчийг дарна уу.</li>
+                    <li>Гарч ирэх цонхноос <b>"Install" / "Суулгах"</b> дээр дарж баталгаажуулна уу.</li>
+                    <li>Хэрэв товч харагдахгүй бол Chrome цэс (⋮) → <b>"Add to Home screen" / "Нүүр хуудас руу нэмэх"</b> сонгоно уу.</li>
+                </ol>
+                <button type="button" class="btn btn-success btn-full" onclick="triggerAndroidInstall()">⬇️ Суулгах</button>
+                <p id="androidInstallHint" style="color:#94a3b8; font-size:0.85rem; margin-top:0.6rem;"></p>
+            </div>
+
+            <div id="installStepsIOS" class="install-steps" style="display:none;">
+                <ol>
+                    <li>Энэ хуудсыг <b>Safari</b> хөтчөөр нээнэ үү (Chrome/бусад апп дээр ажиллахгүй).</li>
+                    <li>Доод (эсвэл дээд) хэсгийн <b>Хуваалцах</b> товч <b>⬆️⎘</b> дарна уу.</li>
+                    <li>Жагсаалтаас доош гүйлгэж <b>"Add to Home Screen" / "Нүүр хуудас руу нэмэх"</b> сонгоно уу.</li>
+                    <li>Баруун дээд буланд <b>"Add" / "Нэмэх"</b> товч дарж баталгаажуулна уу.</li>
+                </ol>
+                <p style="color:#94a3b8; font-size:0.85rem; margin-top:0.6rem;">Суулгасны дараа апп таны нүүр хуудсан дээр лого хэлбэрээр гарч ирнэ.</p>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 GameAccount.vercel - Account Худалдаа</p>
+    </footer>
+
+</body>
+</html>
