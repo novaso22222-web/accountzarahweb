@@ -2,7 +2,6 @@
 // Supabase, CDN, гадны зураг зэрэг өөр домэйний хүсэлтийг огт хөндөхгүй.
 const CACHE = 'gameaccount-v2';
 const CORE = [
-    '/index.html',
     '/style.css',
     '/script.js',
     '/manifest.json',
@@ -43,6 +42,6 @@ self.addEventListener('fetch', (event) => {
                 }
                 return res;
             })
-            .catch(() => caches.match(req).then((cached) => cached || caches.match('/index.html')))
+            .catch(() => caches.match(req).then((cached) => cached || caches.match('/')))
     );
 });

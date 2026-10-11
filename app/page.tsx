@@ -1,5 +1,9 @@
-import { redirect } from 'next/navigation'
+'use client';
 
 export default function Page() {
-  redirect('/index.html')
+  return (
+    <div style={{ padding: '40px', textAlign: 'center' }}>
+      <h1>Game Account Sale</h1>
+    </div>
+  );
 }

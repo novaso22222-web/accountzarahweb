@@ -125,7 +125,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     updateUI();
 
     if (!supabaseClient) {
-        console.error('Supabase CDN ачаалагдсангүй. index.html дахь <script src=".../supabase-js@2"> мөрийг шалгана уу.');
+        console.error('Supabase CDN ачаалагдсангүй. layout.tsx дахь <script src=".../supabase-js@2"> мөрийг шалгана уу.');
         return;
     }
 
