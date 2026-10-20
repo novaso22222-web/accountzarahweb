@@ -3,11 +3,11 @@ import type { ReactNode } from "react";
 import Script from "next/script";
 import AppScript from "./app-script";
 
-const SITE = "https://account-hudaldaa.vercel.app";
+const SITE = "https://acc-hudaldaa.site";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE),
-  title: "GameAccount.Vercel - Made By NoVa",
+  title: "ACCOUNT HUDALDAA - Made By NoVa",
   description: "Тоглоомын аккаунт худалдааны платформ",
   formatDetection: { telephone: true },
   manifest: "/manifest.json",

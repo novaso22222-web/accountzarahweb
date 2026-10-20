@@ -109,7 +109,7 @@ export default function Page() {
     <>
       <header>
         <div className="logo" onClick={showAllListings}>
-          GAME<span className="neon-text">ACCOUNT</span>.VERCEL
+          ACCOUNT<span className="neon-text">HUDALDAA</span>
         </div>
 
         <div
@@ -807,7 +807,7 @@ export default function Page() {
       </div>
 
       <footer>
-        <p>© 2026 GameAccount.vercel - Account Худалдаа</p>
+        <p>© 2026 Account Hudaldaa - Account Худалдаа</p>
       </footer>
     </>
   );
