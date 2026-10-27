@@ -7,7 +7,7 @@ const SITE = "https://acc-hudaldaa.site";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE),
-  title: "ACCOUNT HUDALDAA - Made By NoVa",
+  title: "Acc-Hudaldaa - Тоглоомын аккаунт худалдааны платформ",
   description: "Тоглоомын аккаунт худалдааны платформ",
   formatDetection: { telephone: true },
   manifest: "/manifest.json",
@@ -18,15 +18,15 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     url: SITE,
-    title: "ACCOUNT HUDALDAA",
+    title: "Acc-Hudaldaa - Тоглоомын аккаунт худалдааны платформ",
     description: "Тоглоомын аккаунт худалдааны платформ",
-    images: [{ url: `${SITE}/og-image.png`, width: 1200, height: 630 }],
+    images: [{ url: `${SITE}/account-hudaldaa-logo.png`, width: 1200, height: 630 }],
   },
   twitter: {
     card: "summary_large_image",
-    title: "ACCOUNT HUDALDAA",
+    title: "Acc-Hudaldaa - Тоглоомын аккаунт худалдааны платформ",
     description: "Тоглоомын аккаунт худалдааны платформ",
-    images: [`${SITE}/og-image.png`],
+    images: [`${SITE}/account-hudaldaa-logo.png`],
   },
   appleWebApp: {
     capable: true,
