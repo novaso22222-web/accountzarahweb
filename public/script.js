@@ -16,7 +16,7 @@ const NOTIF_TABLE = 'notifications';
 const DEALS_TABLE = 'midman_deals';
 const CREDS_TABLE = 'midman_credentials';
 
-// ---- МИДНАМ ----
+// ---- МИДМЭН ----
 // Шимтгэлийг supabase_midman.sql дахь midman_cancel_fee() / midman_complete_fee()-тэй ЯГ ИЖИЛ байлгана.
 const MIDMAN_CANCEL_FEE = 2500;    // цуцлагдвал худалдан авагчид буцаахдаа хасах
 const MIDMAN_COMPLETE_FEE = 5000;  // амжилттай болбол худалдагчид шилжүүлэхдээ хасах
@@ -1002,7 +1002,7 @@ function stopRealtime() {
 }
 
 // ==========================================
-// 9.2 МИДНАМ (админ дундын зуучлагчтай аюулгүй худалдан авалт)
+// 9.2 МИДМЭН (админ дундын зуучлагчтай аюулгүй худалдан авалт)
 // ==========================================
 let activeDealId = null;
 
@@ -1045,7 +1045,7 @@ function dealRole(d) {
 
 function midmanErr(msg) {
     const m = String(msg || '');
-    if (m.includes('midman_one_active_per_listing') || m.includes('duplicate key')) return 'Энэ зар дээр миднам аль хэдийн явагдаж байна.';
+    if (m.includes('midman_one_active_per_listing') || m.includes('duplicate key')) return 'Энэ зар дээр мидмэн аль хэдийн явагдаж байна.';
     return m || 'Алдаа гарлаа.';
 }
 
@@ -1053,7 +1053,7 @@ async function startMidman(listingId) {
     if (!currentUser) return alert('Нэвтэрч орно уу!');
     const item = listings.find(l => l.id === listingId);
     if (!item) return;
-    const msg = `🤝 МИДНАМ — #${item.postNum} "${item.title}"\nҮнэ: ${fmtMoney(item.price)}\n\n`
+    const msg = `🤝 МИДМЭН — #${item.postNum} "${item.title}"\nҮнэ: ${fmtMoney(item.price)}\n\n`
         + `1) Та мөнгөө эхлээд АДМИНД шилжүүлнэ.\n2) Админ төлбөрийг баталгаажуулсны дараа худалдагч account-аа админд өгнө.\n`
         + `3) Админ шалгаж, зөв бол танд өгнө.\n4) Та хүлээн авсны дараа л мөнгө худалдагчид очно.\n\n`
         + `Цуцлагдвал ${fmtMoney(MIDMAN_CANCEL_FEE)} хасаж буцаана. Амжилттай болбол ${fmtMoney(MIDMAN_COMPLETE_FEE)} шимтгэл авна.\n\nЭхлүүлэх үү?`;
@@ -1070,12 +1070,12 @@ async function openMidmanList() {
     if (!modalOpen('midmanModal')) { closeModals(); showModal('midmanModal'); }
     const body = document.getElementById('midmanBody');
     const title = document.getElementById('midmanTitle');
-    if (title) title.textContent = currentUser.isAdmin ? '🤝 Бүх миднам гүйлгээ' : '🤝 Миний миднам гүйлгээнүүд';
+    if (title) title.textContent = currentUser.isAdmin ? '🤝 Бүх мидмэн гүйлгээ' : '🤝 Миний мидмэн гүйлгээнүүд';
     if (!body) return;
     body.innerHTML = '<p style="color:#aaa;">Уншиж байна...</p>';
     const { data, error } = await supabaseClient.from(DEALS_TABLE).select('*').order('id', { ascending: false });
     if (error) { body.innerHTML = `<p style="color:#ff2a5f;">Алдаа: ${escapeHTML(error.message)}</p>`; return; }
-    if (!data || data.length === 0) { body.innerHTML = '<p style="color:#aaa;">Миднам гүйлгээ байхгүй байна. Зар дээр "🤝 Миднам" товчийг дарж эхлүүлнэ.</p>'; return; }
+    if (!data || data.length === 0) { body.innerHTML = '<p style="color:#aaa;">Мидмэн гүйлгээ байхгүй байна. Зар дээр "🤝 Мидмэн" товчийг дарж эхлүүлнэ.</p>'; return; }
     body.innerHTML = data.map(d => {
         const role = dealRole(d);
         const myTurn = MM_WAITING_ON[d.status] === role;
@@ -1129,7 +1129,7 @@ function renderDeal(d, creds) {
     const body = document.getElementById('midmanBody');
     const title = document.getElementById('midmanTitle');
     if (!body) return;
-    if (title) title.textContent = `🤝 Миднам #${d.id}`;
+    if (title) title.textContent = `🤝 Мидмэн #${d.id}`;
     const role = dealRole(d);
     const idx = mmStepIndex(d.status);
     const cancelled = d.status === 'cancelled';
@@ -1281,13 +1281,13 @@ async function submitMidmanInfo(id) {
     return midmanAct(id, 'submit_info', payload);
 }
 
-// Админ хэсэг доторх миднам хүснэгт
+// Админ хэсэг доторх мидмэн хүснэгт
 async function loadAdminMidman() {
     const tbody = document.getElementById('adminMidmanTable');
     if (!tbody) return;
     const { data, error } = await supabaseClient.from(DEALS_TABLE).select('*').order('id', { ascending: false });
     if (error) { tbody.innerHTML = `<tr><td colspan="6" style="padding:12px; color:#ff2a5f;">Алдаа: ${escapeHTML(error.message)}</td></tr>`; return; }
-    if (!data || data.length === 0) { tbody.innerHTML = `<tr><td colspan="6" style="padding:12px; text-align:center; color:#aaa;">Миднам гүйлгээ байхгүй байна.</td></tr>`; return; }
+    if (!data || data.length === 0) { tbody.innerHTML = `<tr><td colspan="6" style="padding:12px; text-align:center; color:#aaa;">Мидмэн гүйлгээ байхгүй байна.</td></tr>`; return; }
     tbody.innerHTML = data.map(d => `
         <tr style="border-bottom: 1px solid rgba(255,255,255,0.08);">
             <td style="padding:10px;">#${escapeHTML(d.id)}</td>
@@ -1428,7 +1428,7 @@ function openDetailModal(id) {
                     html += `<button type="button" class="btn btn-purple" onclick="initiateTradeChat(${jsArg(item.ownerEmail)}, ${jsArg(item.ownerUsername)}, ${jsArg(item.postNum)})">🔄 Солилцох хүсэлт явуулах</button>`;
                 }
                 html += `<button type="button" class="btn btn-primary" onclick="initiateAdminListingChat(${jsArg(item.postNum)})">🛡 Админтай холбогдох</button>`;
-                html += `<button type="button" class="btn btn-warning" onclick="startMidman(${jsArg(item.id)})">🤝 Миднам (админ дундуур аюулгүй авах)</button>`;
+                html += `<button type="button" class="btn btn-warning" onclick="startMidman(${jsArg(item.id)})">🤝 Мидмэн (админ дундуур аюулгүй авах)</button>`;
             }
         } else {
             html = '<p style="color:#ff2a5f; margin-top:10px;">Нэвтэрч орж чатална уу.</p>';
@@ -1454,7 +1454,7 @@ function updateUI() {
             authControls.innerHTML = `
                 <span class="user-info" style="margin-right:10px;">${escapeHTML(currentUser.username)} ${currentUser.isAdmin ? '<b style="color:#ff2a5f;">(АДМИН)</b>' : ''}</span>
                 <button type="button" class="btn btn-primary" onclick="openChatModal()">💬 Мессеж</button>
-                <button type="button" class="btn btn-success" onclick="openMidmanList()">🤝 Миднам</button>
+                <button type="button" class="btn btn-success" onclick="openMidmanList()">🤝 Мидмэн</button>
                 <button type="button" class="btn btn-purple notif-btn" onclick="openNotifModal()" aria-label="Мэдэгдэл">🔔<span id="notifBadge" class="notif-badge" hidden>0</span></button>
                 ${currentUser.isAdmin ? '<button type="button" class="btn btn-warning" onclick="openAdminModal()">Админ хэсэг</button>' : ''}
                 <button type="button" class="btn btn-danger" onclick="logout()">Гарах</button>`;
