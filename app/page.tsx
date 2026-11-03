@@ -463,7 +463,7 @@ export default function Page() {
             🛠 Админ Удирдах Хэсэг
           </h2>
 
-          {/* Миднам гүйлгээнүүд */}
+          {/* Мидмэн гүйлгээнүүд */}
           <h3
             style={{
               color: "var(--accent-green)",
@@ -471,7 +471,7 @@ export default function Page() {
               fontSize: "1.1rem",
             }}
           >
-            🤝 Миднам гүйлгээнүүд (дундын зуучлал)
+            🤝 Мидмэн гүйлгээнүүд (дундын зуучлал)
           </h3>
           <div
             className="table-wrap"
@@ -602,7 +602,7 @@ export default function Page() {
         </div>
       </div>
 
-      {/* МИДНАМ MODAL */}
+      {/* МИДМЭН MODAL */}
       <div className="modal" id="midmanModal" style={{ display: "none" }}>
         <div
           className="modal-content modal-xl"
@@ -612,7 +612,7 @@ export default function Page() {
             ×
           </span>
           <h3 id="midmanTitle" className="modal-title">
-            🤝 Миднам
+            🤝 Мидмэн
           </h3>
           <div id="midmanBody" />
         </div>
