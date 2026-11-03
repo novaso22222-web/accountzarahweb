@@ -1084,3 +1084,88 @@ footer {
     header { padding-top: calc(0.6rem + var(--safe-top)); padding-bottom: 0.6rem; }
     .modal-content { max-height: 96vh; }
 }
+
+
+/* ==========================================
+   МИДНАМ / NOTIFICATION / TOAST
+   ========================================== */
+.notif-btn { position: relative; }
+.notif-badge {
+    position: absolute; top: -6px; right: -6px; min-width: 18px; height: 18px; padding: 0 5px;
+    border-radius: 999px; background: var(--accent-red); color: #fff; font-size: 0.7rem; font-weight: 800;
+    display: inline-flex; align-items: center; justify-content: center; line-height: 1;
+}
+.notif-badge[hidden] { display: none; }
+.chat-unread-dot {
+    display: inline-block; width: 8px; height: 8px; border-radius: 50%;
+    background: var(--accent-red); margin-right: 6px;
+}
+.notif-item {
+    padding: 12px; border-bottom: 1px solid var(--border-color); cursor: pointer; border-radius: var(--radius-sm);
+}
+.notif-item:hover { background: rgba(255, 255, 255, 0.05); }
+.notif-item.unread { background: rgba(255, 122, 48, 0.1); border-left: 3px solid var(--primary); }
+.notif-title { font-weight: 700; }
+.notif-body { color: var(--text-muted); font-size: 0.88rem; margin-top: 2px; }
+.notif-time { color: var(--text-dim); font-size: 0.75rem; margin-top: 4px; }
+
+#toastBox {
+    position: fixed; top: calc(var(--safe-top) + 12px); right: 12px; z-index: 9999;
+    display: flex; flex-direction: column; gap: 8px; max-width: min(360px, calc(100vw - 24px));
+}
+.toast {
+    background: var(--bg-elev); border: 1px solid var(--border-color-strong); border-radius: var(--radius-sm);
+    padding: 10px 14px; cursor: pointer; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    display: flex; flex-direction: column; gap: 2px; color: var(--text-main);
+}
+.toast span { color: var(--text-muted); font-size: 0.85rem; }
+
+.mm-row {
+    display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 12px;
+    border: 1px solid var(--border-color); border-radius: var(--radius-sm); margin-bottom: 10px;
+}
+.mm-row.mm-myturn { border-color: var(--primary-2); background: rgba(255, 176, 32, 0.07); }
+.mm-sub { color: var(--text-muted); font-size: 0.85rem; margin-top: 3px; }
+.mm-top { margin-bottom: 14px; }
+.mm-steps { display: flex; flex-direction: column; gap: 10px; margin: 14px 0; }
+.mm-step {
+    display: flex; gap: 12px; padding: 12px; border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm); background: var(--bg-input);
+}
+.mm-step.pending { opacity: 0.55; }
+.mm-step.current { border-color: var(--primary); box-shadow: 0 0 0 1px var(--primary-glow); background: rgba(255, 122, 48, 0.07); }
+.mm-step.done { border-color: rgba(46, 230, 197, 0.4); }
+.mm-num {
+    flex: 0 0 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    background: rgba(255, 255, 255, 0.08); font-weight: 800;
+}
+.mm-step.current .mm-num { background: var(--gradient-main); color: #1a0e05; }
+.mm-step.done .mm-num { background: var(--accent-teal); color: #04241e; }
+.mm-main { flex: 1; min-width: 0; }
+.mm-head { display: flex; flex-wrap: wrap; gap: 6px 10px; align-items: center; margin-bottom: 6px; }
+.mm-who { font-size: 0.75rem; padding: 2px 8px; border-radius: 999px; background: rgba(255, 255, 255, 0.08); color: var(--text-muted); }
+.mm-turn { font-size: 0.75rem; color: var(--primary-2); font-weight: 800; }
+.mm-when { font-size: 0.75rem; color: var(--text-dim); }
+.mm-btn { margin: 6px 8px 0 0; }
+.mm-btn[disabled] { opacity: 0.45; cursor: not-allowed; }
+.mm-btnrow { display: flex; flex-wrap: wrap; }
+.mm-wait { color: var(--text-muted); font-size: 0.88rem; margin-bottom: 4px; }
+.mm-pay, .mm-info, .mm-creds {
+    padding: 10px 12px; border-radius: var(--radius-sm); border: 1px dashed var(--border-color-strong);
+    background: rgba(255, 255, 255, 0.03); margin: 6px 0; line-height: 1.7;
+}
+.mm-info { border-style: solid; border-color: rgba(46, 230, 197, 0.45); margin-bottom: 8px; }
+.mm-creds { margin-top: 8px; }
+.mm-creds code { background: rgba(0, 0, 0, 0.4); padding: 2px 6px; border-radius: 6px; word-break: break-all; user-select: all; }
+.mm-pre { white-space: pre-wrap; word-break: break-word; }
+.mm-reject {
+    padding: 10px 12px; border-radius: var(--radius-sm); background: rgba(255, 61, 94, 0.12);
+    border: 1px solid rgba(255, 61, 94, 0.5); margin: 8px 0;
+}
+.mm-ok { padding: 10px 12px; border-radius: var(--radius-sm); background: rgba(46, 230, 197, 0.12); border: 1px solid rgba(46, 230, 197, 0.5); }
+.mm-form { display: flex; flex-direction: column; gap: 6px; }
+.mm-form label { font-size: 0.85rem; color: var(--text-muted); margin-top: 6px; }
+.mm-form textarea, .mm-form input {
+    width: 100%; padding: 10px 12px; border-radius: var(--radius-sm); border: 1px solid var(--border-color);
+    background: var(--bg-input); color: var(--text-main); font: inherit;
+}

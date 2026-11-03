@@ -463,6 +463,42 @@ export default function Page() {
             🛠 Админ Удирдах Хэсэг
           </h2>
 
+          {/* Миднам гүйлгээнүүд */}
+          <h3
+            style={{
+              color: "var(--accent-green)",
+              marginBottom: "0.8rem",
+              fontSize: "1.1rem",
+            }}
+          >
+            🤝 Миднам гүйлгээнүүд (дундын зуучлал)
+          </h3>
+          <div
+            className="table-wrap"
+            style={{ overflowX: "auto", marginBottom: "2rem" }}
+          >
+            <table className="admin-table" style={tableStyle}>
+              <thead>
+                <tr
+                  style={{
+                    background: "rgba(46, 230, 197, 0.12)",
+                    color: "var(--accent-green)",
+                    borderBottom: "2px solid var(--border-color)",
+                  }}
+                >
+                  <th style={thStyle}>#</th>
+                  <th style={thStyle}>Зар</th>
+                  <th style={thStyle}>Худалдан авагч</th>
+                  <th style={thStyle}>Худалдагч</th>
+                  <th style={thStyle}>Үнэ</th>
+                  <th style={thStyle}>Төлөв</th>
+                  <th style={thStyle}>Үйлдэл</th>
+                </tr>
+              </thead>
+              <tbody id="adminMidmanTable" />
+            </table>
+          </div>
+
           {/* Шуурхай хүсэлтүүд */}
           <h3
             style={{
@@ -563,6 +599,44 @@ export default function Page() {
               <tbody id="adminUsersTable" />
             </table>
           </div>
+        </div>
+      </div>
+
+      {/* МИДНАМ MODAL */}
+      <div className="modal" id="midmanModal" style={{ display: "none" }}>
+        <div
+          className="modal-content modal-xl"
+          style={{ maxHeight: "90vh", overflowY: "auto" }}
+        >
+          <span className="close-btn" onClick={closeModals}>
+            ×
+          </span>
+          <h3 id="midmanTitle" className="modal-title">
+            🤝 Миднам
+          </h3>
+          <div id="midmanBody" />
+        </div>
+      </div>
+
+      {/* NOTIFICATION MODAL */}
+      <div className="modal" id="notifModal" style={{ display: "none" }}>
+        <div
+          className="modal-content"
+          style={{ maxHeight: "85vh", overflowY: "auto" }}
+        >
+          <span className="close-btn" onClick={closeModals}>
+            ×
+          </span>
+          <h3 className="modal-title">🔔 Мэдэгдэл</h3>
+          <button
+            type="button"
+            className="btn btn-secondary"
+            onClick={call("markAllNotifsRead")}
+            style={{ marginBottom: "0.8rem" }}
+          >
+            Бүгдийг уншсан болгох
+          </button>
+          <div id="notifList" />
         </div>
       </div>
 
